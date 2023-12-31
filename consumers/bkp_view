@@ -1,0 +1,133 @@
+from django.shortcuts import render, redirect  
+from django.http import HttpResponse
+from .forms import ConsumerForm
+from .models import Consumer
+import csv
+
+def index(request):
+    if request.method == 'POST':
+            form = ConsumerForm(request.POST) 
+
+            Username = request.POST['Username']
+            Date_Time = request.POST['Date_Time']
+
+            try:
+                consumer = Consumer.objects.get(Username_Consumer=Username,Date_Time_Consumer=Date_Time)   
+
+                request.session['Username'] = Username
+                request.session['Date_Time'] = Date_Time
+
+            except Consumer.DoesNotExist:
+                consumer = None
+                         
+            if consumer is not None:
+                return redirect('/consumer_excel')                                           
+            else:
+                return render(request, 'index.html')
+
+    return render(request,"index.html") 
+
+def consumer_excel(request):
+    response = HttpResponse(
+        content_type='text/csv',
+        headers={'Content-Disposition': 'attachment; filename="consumer(MMC).csv"'},
+    )
+
+    writer = csv.writer(response)
+    writer.writerow(['Id','SurveyId','Latitude','Longitude','Username','Date_Time','SubDivision','Section','BuildingReferenceNumber','ConnectedPoleNo','PaintedPoleNo',
+            'FeederName','DTCode','ConsumerName','NewAccountNumber','OldAccountNumber','SCNumber','CustomerMobileNumber','FlatNo','Address1','Address2','Address3',
+            'ConsumerDoorLock','AMRInstalled','CommunicationType','CTRatio','DisplayCondition','MaximumDemand','MeterAvailability','MeterBox','MeterLocation',
+            'HeightGT5ft','MeterStatus','NominalVoltage','PhaseConnection','SealCondition','SealType','TotalMF','kWh','Bypass','Category','Type','SubType',
+            'MeterSerialNumber','MeterMake','Theft','BillDelivered','BillShown','MeterPhoto','BillPhoto','OtherPhoto','NeighbouringMeterNo','NeighbouringConsumerNo',
+            'NoofDigits','SurveyorRemark'])
+
+    Username=request.POST.get('Username_Consumer')
+    Date_Time=request.POST.get('Date_Time_Consumer')
+
+    if Username == 'all':
+
+        for consumer in Consumer.objects.all().filter(Date_Time__contains=Date_Time).values_list('Id','SurveyId','Latitude','Longitude','Username','Date_Time','SubDivision','Section','BuildingReferenceNumber','ConnectedPoleNo','PaintedPoleNo',
+            'FeederName','DTCode','ConsumerName','NewAccountNumber','OldAccountNumber','SCNumber','CustomerMobileNumber','FlatNo','Address1','Address2','Address3',
+            'ConsumerDoorLock','AMRInstalled','CommunicationType','CTRatio','DisplayCondition','MaximumDemand','MeterAvailability','MeterBox','MeterLocation',
+            'HeightGT5ft','MeterStatus','NominalVoltage','PhaseConnection','SealCondition','SealType','TotalMF','kWh','Bypass','Category','Type','SubType',
+            'MeterSerialNumber','MeterMake','Theft','BillDelivered','BillShown','MeterPhoto','BillPhoto','OtherPhoto','NeighbouringMeterNo','NeighbouringConsumerNo',
+            'NoofDigits','SurveyorRemark'):
+            writer.writerow(consumer)
+    else:
+
+        for consumer in Consumer.objects.all().filter(Username=Username,Date_Time__contains=Date_Time).values_list('Id','SurveyId','Latitude','Longitude','Username','Date_Time','SubDivision','Section','BuildingReferenceNumber','ConnectedPoleNo','PaintedPoleNo',
+            'FeederName','DTCode','ConsumerName','NewAccountNumber','OldAccountNumber','SCNumber','CustomerMobileNumber','FlatNo','Address1','Address2','Address3',
+            'ConsumerDoorLock','AMRInstalled','CommunicationType','CTRatio','DisplayCondition','MaximumDemand','MeterAvailability','MeterBox','MeterLocation',
+            'HeightGT5ft','MeterStatus','NominalVoltage','PhaseConnection','SealCondition','SealType','TotalMF','kWh','Bypass','Category','Type','SubType',
+            'MeterSerialNumber','MeterMake','Theft','BillDelivered','BillShown','MeterPhoto','BillPhoto','OtherPhoto','NeighbouringMeterNo','NeighbouringConsumerNo',
+            'NoofDigits','SurveyorRemark'):
+            writer.writerow(consumer)
+
+    return response
+
+
+def index(request):
+    if request.method == 'POST':
+            form = ConsumerForm(request.POST) 
+
+            Username = request.POST['Username']
+            Date_Time = request.POST['Date_Time']
+
+            try:
+                consumer1 = Consumer.objects.get(Username_Consumer1=Username,Date_Time_Consumer1=Date_Time)   
+
+                request.session['Username'] = Username
+                request.session['Date_Time'] = Date_Time
+
+            except Consumer.DoesNotExist:
+                consumer1= None
+                         
+            if consumer1 is not None:
+                return redirect('/consumer_excel1')                                           
+            else:
+                return render(request, 'index.html')
+
+    return render(request,"index.html") 
+
+def consumer_excel1(request):
+    response = HttpResponse(
+        content_type='text/csv',
+        headers={'Content-Disposition': 'attachment; filename="consumer(ITI).csv"'},
+    )
+
+    writer = csv.writer(response)
+    writer.writerow(['Id','SurveyId','Latitude','Longitude','Username','Date_Time','SubDivision','Section','BuildingReferenceNumber','ConnectedPoleNo','PaintedPoleNo',
+            'FeederName','DTCode','ConsumerName','NewAccountNumber','OldAccountNumber','SCNumber','CustomerMobileNumber','FlatNo','Address1','Address2','Address3',
+            'ConsumerDoorLock','AMRInstalled','CommunicationType','CTRatio','DisplayCondition','MaximumDemand','MeterAvailability','MeterBox','MeterLocation',
+            'HeightGT5ft','MeterStatus','NominalVoltage','PhaseConnection','SealCondition','SealType','TotalMF','kWh','Bypass','Category','Type','SubType',
+            'MeterSerialNumber','MeterMake','Theft','BillDelivered','BillShown','MeterPhoto','BillPhoto','OtherPhoto','NeighbouringMeterNo','NeighbouringConsumerNo',
+            'NoofDigits','SurveyorRemark'])
+
+    Username=request.POST.get('Username_Consumer1')
+    Date_Time=request.POST.get('Date_Time_Consumer1')
+
+    if Username == 'all':
+
+        for consumer1 in Consumer.objects.all().filter(Date_Time__contains=Date_Time).values_list('Id','SurveyId','Latitude','Longitude','Username','Date_Time','SubDivision','Section','BuildingReferenceNumber','ConnectedPoleNo','PaintedPoleNo',
+            'FeederName','DTCode','ConsumerName','NewAccountNumber','OldAccountNumber','SCNumber','CustomerMobileNumber','FlatNo','Address1','Address2','Address3',
+            'ConsumerDoorLock','AMRInstalled','CommunicationType','CTRatio','DisplayCondition','MaximumDemand','MeterAvailability','MeterBox','MeterLocation',
+            'HeightGT5ft','MeterStatus','NominalVoltage','PhaseConnection','SealCondition','SealType','TotalMF','kWh','Bypass','Category','Type','SubType',
+            'MeterSerialNumber','MeterMake','Theft','BillDelivered','BillShown','MeterPhoto','BillPhoto','OtherPhoto','NeighbouringMeterNo','NeighbouringConsumerNo',
+            'NoofDigits','SurveyorRemark'):
+            writer.writerow(consumer1)
+    else:
+
+        for consumer1 in Consumer.objects.all().filter(Username=Username,Date_Time__contains=Date_Time).values_list('Id','SurveyId','Latitude','Longitude','Username','Date_Time','SubDivision','Section','BuildingReferenceNumber','ConnectedPoleNo','PaintedPoleNo',
+            'FeederName','DTCode','ConsumerName','NewAccountNumber','OldAccountNumber','SCNumber','CustomerMobileNumber','FlatNo','Address1','Address2','Address3',
+            'ConsumerDoorLock','AMRInstalled','CommunicationType','CTRatio','DisplayCondition','MaximumDemand','MeterAvailability','MeterBox','MeterLocation',
+            'HeightGT5ft','MeterStatus','NominalVoltage','PhaseConnection','SealCondition','SealType','TotalMF','kWh','Bypass','Category','Type','SubType',
+            'MeterSerialNumber','MeterMake','Theft','BillDelivered','BillShown','MeterPhoto','BillPhoto','OtherPhoto','NeighbouringMeterNo','NeighbouringConsumerNo',
+            'NoofDigits','SurveyorRemark'):
+            writer.writerow(consumer1)
+
+    return response
+
+def logout(request):
+    return render(request,"login.html")
+
+
